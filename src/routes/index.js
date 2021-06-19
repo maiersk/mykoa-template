@@ -1,6 +1,6 @@
 import { join } from 'path'
+import { loadFiles } from '../lib/loadFiles'
 import Router from 'koa-router'
-import loadFile from '../lib/loadFiles'
 import controllers from '../controllers/'
 
 const router = new Router
@@ -10,7 +10,7 @@ router.get('/', (ctx, next) => {
   next()
 })
 
-loadFile(join(__dirname, '/')).then((files) => {
+loadFiles(join(__dirname, '/')).then((files) => {
   files.forEach((routerName) => {
     const route = require(join(__dirname, routerName)).default
     const routeObj = route ? route(Router, controllers) : false

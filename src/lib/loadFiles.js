@@ -1,6 +1,6 @@
 import { readdirSync } from 'fs'
 
-export default function loadFiles(path) {
+export const loadFiles = (path) => {
   let files = readdirSync(path)
 
   if (files.length === 0) {
@@ -14,4 +14,12 @@ export default function loadFiles(path) {
   })
 
   return Promise.resolve(files)
+}
+
+export const importComponents = (path) => {
+  loadFiles(path).then((dir) => {
+    const files = readdirSync(dir)
+
+    console.log(files)
+  })
 }

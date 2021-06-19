@@ -5,6 +5,7 @@ import koastatic from 'koa-static'
 import router from './routes/'
 import { join } from 'path'
 
+import {} from './components'
 import { loggerMiddleware } from './middlewares/logger'
 import { errorHandel, responseHandler } from './middlewares/response'
 

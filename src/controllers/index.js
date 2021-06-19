@@ -1,5 +1,5 @@
 import { join } from 'path'
-import loadFiles from '../lib/loadFiles'
+import { loadFiles } from '../lib/loadFiles'
 import models from '../models/'
 
 let controllers = []
