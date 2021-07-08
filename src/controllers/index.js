@@ -1,18 +1,12 @@
-import { join } from 'path'
-import { loadFiles } from '../lib/loadFiles'
-import models from '../models/'
+import { controllers, models } from '../components/'
 
-let controllers = []
+Object.keys(controllers).forEach((key) => {
+  const { InitClass } = controllers[key]
+  const controllerObj = InitClass ? InitClass(models) : false
 
-loadFiles(join(__dirname, '/')).then((files) => {
-  files.forEach((controllerName) => {
-    const { InitClass } = require(join(__dirname, controllerName))
-    const controllerObj = InitClass ? InitClass(models) : false
-
-    if (InitClass && controllerObj) {
-      controllers[controllerName] = controllerObj
-    }
-  })
+  if (InitClass && controllerObj) {
+    controllers[key] = controllerObj
+  }
 })
 
 export default controllers

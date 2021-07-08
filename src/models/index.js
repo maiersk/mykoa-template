@@ -1,24 +1,19 @@
-import { loadFiles } from '../lib/loadFiles'
 import sequelize from '../database/mysql'
 import { DataTypes } from 'sequelize'
-import { join } from 'path'
+import { models } from '../components/'
 
-let db = []
+Object.keys(models).forEach((key) => {
+  const model = models[key]
 
-loadFiles(join(__dirname, '/')).then((files) => {
-  files.forEach((modelName) => {
-    const model = require(join(__dirname, modelName)).default
-
-    if (model) {
-      db[modelName] = model(sequelize, DataTypes)
-    }
-
-    Object.keys(db).forEach(((modelName) => {
-      if (db[modelName]?.associate ?? undefined) {
-        db[modelName].associate(db)
-      }
-    }))
-  })
+  if (model) {
+    model(sequelize, DataTypes)
+  }
 })
 
-export default db
+Object.keys(models).forEach((key) => {
+  if (models[key]?.associate ?? undefined) {
+    models[key].associate(models)
+  }
+})
+
+export default models
