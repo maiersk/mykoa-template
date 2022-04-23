@@ -1,5 +1,5 @@
 import Router from 'koa-router'
-import { routers, controllers } from '../components/'
+import comps from '../components/'
 
 const router = new Router
 
@@ -8,12 +8,14 @@ router.get('/', (ctx, next) => {
   next()
 })
 
-Object.keys(routers).forEach((key) => {
-  const route = routers[key].default
-  const routeObj = route ? route(Router, controllers) : false
+Object.keys(comps).forEach((key) => {
+  if (key === 'Router') {
+    const route = comps[key].default
+    const routeObj = route ? route(Router, comps) : false
 
-  if (route && routeObj) {
-    router.use(routeObj.routers(), router.allowedMethods())
+    if (route && routeObj) {
+      router.use(routeObj.routers(), router.allowedMethods())
+    }
   }
 })
 

@@ -1,38 +1,27 @@
 import { join } from 'path'
 import loadFiles from '../lib/loadFiles'
 
-let models = []
-let controllers = []
-let services = []
-let routers = []
-let testings = []
+let comps = {}
 
-loadFiles(join(__dirname, '/')).then((dirs) => { 
-  dirs.forEach((dir) => {
-    const dirObj = require(join(__dirname, dir, 'index.js'))?.default ?? undefined
+const initComp = async function(comps) {
+  const dirs = await loadFiles(join(__dirname, '/'))
+  const _comps = comps
+
+  dirs.forEach(async (dir) => {
+    const dirObj = await require(join(__dirname, dir, 'index.js'))?.default ?? undefined
 
     if (dirObj) {
       Object.keys(dirObj).forEach((key) => {
         const compObj = dirObj[key]
 
         console.log(key, compObj.name, compObj)
-        if (key === 'Model') {
-          models[compObj.name] = compObj
-        } else if (key === 'Controler') {
-          controllers[compObj.name] = compObj
-        } else if (key === 'Service') {
-          services[compObj.name] = compObj
-        } else if (key === 'Router') {
-          routers[compObj.name] = compObj
-        } else if (key === 'Testing') {
-          testings[compObj.name] = compObj
-        }
+        _comps[compObj.name] = compObj
       })
-
+      console.log(comps)
     }
   })
-})
-
-export {
-  models, controllers, services, routers, testings
 }
+
+initComp(comps)
+
+export default comps
